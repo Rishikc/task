@@ -1,8 +1,9 @@
+ <script>
+
+</script>
 <?php       
 $path = '/wamp/www/instagram/';
     require_once 'instagram.class.php';
-	if(isset($_POST['submit']))
-	{
 	$tag=$_POST['instagram'];
 
     $instagram = new Instagram('814711a8545b471cbec145e280508048');
@@ -10,10 +11,10 @@ $path = '/wamp/www/instagram/';
 
     $media = $instagram->getTagMedia($tag);
 
-    $limit = 20;
+    $limit = 50;
 $f=1;
     // Set height and width for photos
-    //$size = '250';
+    $size = '250';
 
     // Show results
     // Using for loop will cause error if there are less photos than the limit
@@ -21,15 +22,12 @@ $f=1;
     {
         // Show photo
     //  echo '<p><img src="'.$data->images->thumbnail->url.'" ></p>'; 
-    $r='<img src="'.$data->images->thumbnail->url.'" >';
-	file_put_contents("instagram/".$f.".jpg",$data->images->thumbnail->url); //
-	//or copy($image_url, $your_path);
+    $r='<img src="'.$data->images->thumbnail->url.'" height="'.$size.'" width="'.$size.'">';
+	$content = file_get_contents($data->images->thumbnail->url);
+	$fp = fopen("instagram/".$f.".jpg", "w");
+	fwrite($fp, $content);
+	fclose($fp);
 	$f++;
 	echo $r;
-//	echo $imageinst;
 	}
-	//echo '<br><button id="more" data-maxid="'.$media->pagination->next_max_id.'" data-tag="'.$tag.'">Load more ...</button>';
-	}
-	
-	
 ?>
